@@ -1,6 +1,6 @@
 # Flexible LAMP stack
-#--------------------------------------------------
+# --------------------------------------------------
 # Basename of your containers
-PROJECT_BASENAME=FlexLamp
+PROJECT_BASENAME=flexlamp
 HOST_MACHINE_PMA_PORT=8080
 

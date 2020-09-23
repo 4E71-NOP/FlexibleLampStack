@@ -2,7 +2,7 @@
 # Midnight commande + openSSH
   midnight-commander:
     context: "./containers/${MC_FOLDER}"
-    container_name: '${PROJECT_BASENAME}-mysql'
+    container_name: '${PROJECT_BASENAME}-mc'
     restart: unless-stopped
     cap_drop:
       - ALL

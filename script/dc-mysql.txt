@@ -3,8 +3,8 @@
   mysql:
     build:
       context: "./containers/${MYSQL_FOLDER}"
-      container_name: '${PROJECT_BASENAME}-mysql'
-      restart: 'always'
+    container_name: '${PROJECT_BASENAME}-${MYSQL_FOLDER}'
+    restart: 'always'
     ports:
       - "127.0.0.1:${HOST_MACHINE_MYSQL_PORT}:3306"
     volumes: 

@@ -57,44 +57,44 @@ else
     echo "Preparing initial files"
     rm ./docker-compose.yml
     cp dc-begin.txt docker-compose.yml
-    cp env-begin.txt sample.env
+    cp env-begin.txt .env
 
     # Environment for PHP
     echo "Preparing PHP files"
     cat dc-php.txt >> docker-compose.yml
-    cat env-php.txt >> sample.env
-    sed -i "s/phpVrsString/"$phpVrs"/g" sample.env
+    cat env-php.txt >> .env
+    sed -i "s/phpVrsString/"$phpVrs"/g" .env
 
     # Environment for mysql
     echo "Preparing mysql files"
     cat dc-mysql.txt >> docker-compose.yml
-    cat env-mysql.txt >> sample.env
-    sed -i "s/mysqlVrsString/"$mysqlVrs"/g" sample.env
+    cat env-mysql.txt >> .env
+    sed -i "s/mysqlVrsString/"$mysqlVrs"/g" .env
 
     # Postgres
     if [ ${#postgresVrs} != 0 ]; then
         echo "Preparing postgres files"
         cat dc-postgres.txt >> docker-compose.yml
-        cat env-postgres.txt >> sample.env
-        sed -i "s/postgresVrsString/"$postgresVrs"/g" sample.env
+        cat env-postgres.txt >> .env
+        sed -i "s/postgresVrsString/"$postgresVrs"/g" .env
     fi
 
     # Midnight Commander
     if [ ${#mcVrs} != 0 ]; then
         echo "Preparing mc files"
         cat dc-mc.txt >> docker-compose.yml
-        cat env-mc.txt >> sample.env
-        sed -i "s/mcVrsString/"$mcVrs"/g" sample.env
+        cat env-mc.txt >> .env
+        sed -i "s/mcVrsString/"$mcVrs"/g" .env
     fi
     # PHPMyAdmin
     if [ ${#phpmyadminVrs} != 0 ]; then
         echo "Preparing mc files"
         cat dc-mc.txt >> docker-compose.yml
-        cat env-mc.txt >> sample.env
-        sed -i "s/phpmyadminVrsString/"$phpmyadminVrs"/g" sample.env
+        cat env-mc.txt >> .env
+        sed -i "s/phpmyadminVrsString/"$phpmyadminVrs"/g" .env
     fi
     echo -e "\e[42mMoving files in the main directory and we're done.\e[0m"
-    rm -rf ../docker-compose.yml ../sample.env
+    rm -rf ../docker-compose.yml ../.env
     mv ./docker-compose.yml ../
-    mv ./sample.env ../
+    mv ./.env ../
 fi
