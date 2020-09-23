@@ -1,9 +1,12 @@
 #--------------------------------------------------------------------------------------------------
-# Midnight commande + openSSH
+# Midnight commander + openSSH
   midnight-commander:
-    context: "./containers/${MC_FOLDER}"
+    build:
+      context: "./containers/${MC_FOLDER}"
     container_name: '${PROJECT_BASENAME}-mc'
     restart: unless-stopped
+    #links: 
+     # - webserver
     cap_drop:
       - ALL
     cap_add:
@@ -19,12 +22,16 @@
       MC_AUTHORIZED_KEYS: | 
         ssh-rsa AAAA... me@machine
         ssh-rsa AAAA... you@machine
+    #  TERM: "/usr/bin/bash"
     # Docker-compose offers a mechanism for passwords called "secrets", but it requires
     # compose file version 3.1. Alternatively, mount the secrets file manually.
     # secrets:
     #   - mc_password
     volumes:
-      - midnight-commander:/etc/ssh
+      - ./data/etc/ssh/:/etc/ssh/
+      - ./data/www/html/:/var/www/html/
+      - ./data/ssh-default:/etc/ssh-default/
+
       # You can mount multiple sources by using e.g. /data/data1, /data/data2 as mountpoints.
       - /mnt/my-arbitrary-data-dir:/data 
       # If not using docker-compose for secrets, mount a file containing the password manually.
@@ -35,7 +42,7 @@
 #     # Put the password in this file without anything else.
 #     file: ./secrets/mc_password
 
-volumes:
+# volumes:
   # This volume will contain server keys and configuration
-  midnight-commander: {}
+#  midnight-commander: {}
 

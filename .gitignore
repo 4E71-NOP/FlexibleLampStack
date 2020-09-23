@@ -1,0 +1,10 @@
+./docker-compose.yml
+./.env
+logs/apache2/*
+logs/mysql/*
+logs/postgres/*
+data/apache2/*
+data/mysql/*
+data/postgres/*
+data/etc/ssh/*
+

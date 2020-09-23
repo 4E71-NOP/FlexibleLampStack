@@ -2,8 +2,8 @@
 # Apache + PHP
   webserver:
     build: 
-      context: ./containers/${PHPVERSION}
-    container_name: '${PROJECT_BASENAME}-${PHPVERSION}'
+      context: ./containers/${PHP_FOLDER}
+    container_name: '${PROJECT_BASENAME}-${PHP_FOLDER}'
     restart: 'always'
     ports:
       - "${HOST_MACHINE_HTTP_PORT}:80"
@@ -11,9 +11,9 @@
     links: 
       - mysql
     volumes: 
-      - ${DOCUMENT_ROOT-./www}:/var/www/html
+      - ${DOCUMENT_ROOT-./data/www/html}:/var/www/html
       - ${PHP_INI-./config/php/php.ini}:/usr/local/etc/php/php.ini
-      - ${VHOSTS_DIR-./config/vhosts}:/etc/apache2/sites-enabled
+      - ${VHOSTS_DIR-./config/vhosts/}:/etc/apache2/sites-enabled
       - ${LOG_DIR-./logs/apache2}:/var/log/apache2
     environment:
       PMA_PORT: ${HOST_MACHINE_PMA_PORT}
