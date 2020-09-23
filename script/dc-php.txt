@@ -1,0 +1,20 @@
+#--------------------------------------------------------------------------------------------------
+# Apache + PHP
+  webserver:
+    build: 
+      context: ./containers/${PHPVERSION}
+    container_name: '${PROJECT_BASENAME}-${PHPVERSION}'
+    restart: 'always'
+    ports:
+      - "${HOST_MACHINE_HTTP_PORT}:80"
+      - "${HOST_MACHINE_HTTPS_PORT}:443"
+    links: 
+      - mysql
+    volumes: 
+      - ${DOCUMENT_ROOT-./www}:/var/www/html
+      - ${PHP_INI-./config/php/php.ini}:/usr/local/etc/php/php.ini
+      - ${VHOSTS_DIR-./config/vhosts}:/etc/apache2/sites-enabled
+      - ${LOG_DIR-./logs/apache2}:/var/log/apache2
+    environment:
+      PMA_PORT: ${HOST_MACHINE_PMA_PORT}
+

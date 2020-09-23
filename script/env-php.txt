@@ -1,0 +1,7 @@
+# PHP
+PHPVERSION=phpVrsString
+DOCUMENT_ROOT=./www
+VHOSTS_DIR=./config/vhosts
+APACHE_LOG_DIR=./logs/apache2
+PHP_INI=./config/php/php.ini
+

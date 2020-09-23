@@ -1,0 +1,5 @@
+  redis:
+    container_name: '${PROJECT_BASENAME}-redis'
+    image: redis:latest
+    ports:
+      - "127.0.0.1:${HOST_MACHINE_REDIS_PORT}:6379"
