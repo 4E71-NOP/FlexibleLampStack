@@ -1,9 +1,11 @@
 ./docker-compose.yml
 ./.env
 logs/apache2/*
+logs/mariadb/*
 logs/mysql/*
 logs/postgres/*
 data/apache2/*
+data/mariadb/*
 data/mysql/*
 data/postgres/*
 data/etc/ssh/ssh_host*

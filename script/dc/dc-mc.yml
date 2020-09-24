@@ -3,8 +3,8 @@
   midnight-commander:
     build:
       context: "./containers/${MC_FOLDER}"
-    container_name: '${PROJECT_BASENAME}-mc'
-    restart: unless-stopped
+    container_name: "${PROJECT_BASENAME}-mc"
+    restart: "unless-stopped"
     #links: 
      # - webserver
     cap_drop:
@@ -15,7 +15,7 @@
       - SETUID
       - SYS_CHROOT
     ports:
-      - 2222:2222/tcp
+      - "2222:2222/tcp"
     # Some examples of environment variables. See Dockerfile for more information.
     environment:
       MC_SUPPLEMENTARY_GIDS: "12345 12346"
@@ -44,4 +44,3 @@
 # volumes:
 # This volume will contain server keys and configuration
 #  midnight-commander: {}
-

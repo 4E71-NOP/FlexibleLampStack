@@ -1,0 +1,17 @@
+#--------------------------------------------------------------------------------------------------
+# Adminer
+  adminer:
+    image: adminer
+    container_name: '${PROJECT_BASENAME}-adminer'
+    restart: always
+    ports:
+      - "8080:8080"
+    links:
+      - mysql
+    environment:
+      ADMINER_DESIGN: ${ADMINER_DESIGN}
+#  db:
+#    image: mysql:5.7
+#    restart: always
+#    environment:
+#      MYSQL_ROOT_PASSWORD: ${ADMINER_ROOT_PASSWORD}

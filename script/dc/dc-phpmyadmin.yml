@@ -1,0 +1,22 @@
+#--------------------------------------------------------------------------------------------------
+# PHPMyAdmin
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: "${PROJECT_BASENAME}-phpmyadmin"
+    restart: "always"
+    environment:
+      PMA_HOST: ${PMA_HOST}
+      # PMA_PORT: ${PMA_PORT}
+      # PMA_USER: ${PMA_USER}
+      # PMA_PASSWORD: ${PMA_PASSWORD}
+      # MYSQL_ROOT_PASSWORD: ${PMA_SUPER_PASSWORD}
+      # MYSQL_USER: ${PMA_SUPER_USER}
+      # MYSQL_PASSWORD: ${PMA_SUPER_PASSWORD}
+      PMA_ARBITRARY: 1
+    ports:
+      - "${HOST_MACHINE_PMA_PORT}:8080"
+    # links:
+    #   - mysql
+    # volumes:
+    #   - /sessions
+    #   - ${PHP_INI-./config/php/php.ini}:/usr/local/etc/php/conf.d/php-phpmyadmin.ini

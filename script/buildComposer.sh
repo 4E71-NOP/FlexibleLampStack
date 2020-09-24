@@ -1,4 +1,4 @@
-#/bin/sh
+#/bin/bash
 echo -e "\n\e[46m\e[1m                    BuidlComposer.sh                    \e[21m\e[49m\e[39m\e[m"
 
 if [ ${#1} = 0 ]; then
@@ -9,35 +9,58 @@ if [ ${#1} = 0 ]; then
 else 
     echo -e "Building \e[1m\docker-compose.yml\e[0m file.";
     echo -e "Argument list contains : \e[1m"$1"\e[0m.";
-    mysqlVrs="";
-    postgresVrs="";
     phpVrs="";
-    mcVrs="";
+    mysqlVrs="";
+    mariadbVrs="";
+    postgresVrs="";
+    redisVrs="";
     phpmyadminVrs="";
-    optionList='mariadb mysql mysql8 php54 php56 php71 php72 php73 php74 mc';
+    adminerVrs="";
+    mcVrs="";
+    vsftpdVrs="";
+    svcMysql=0;
+    optionList='php54 php56 php71 php72 php73 php74 mariadb mysql mysql8 postgress redis phpmyadmin adminer mc vsftpd';
     for A in $1
     do
         optionMatch=0;
         # echo "O="$O" ; A="$A;
             case $A in
-            "mariadb"|"mysql"|"mysql8")
+            "php54"|"php56"|"php71"|"php72"|"php73"|"php74")
+                phpVrs=$A
+                optionMatch=1;
+                ;;
+            "mariadb")
+                mariadbVrs=$A
+                optionMatch=1;
+                svcMysql=$((svcMysql+1));
+                ;;
+            "mysql"|"mysql8")
                 mysqlVrs=$A
                 optionMatch=1;
+                svcMysql=$((svcMysql+1));
                 ;;
             "postgres")
                 postgresVrs=$A
                 optionMatch=1;
                 ;;
-            "php54"|"php56"|"php71"|"php72"|"php73"|"php74")
-                phpVrs=$A
+            "redis")
+                redisVrs=$A
+                optionMatch=1;
+                ;;
+            "phpmyadmin")
+                phpmyadminVrs=$A
+                optionMatch=1;
+                ;;
+            "adminer")
+                adminerVrs=$A
                 optionMatch=1;
                 ;;
             "mc")
                 mcVrs=$A
                 optionMatch=1;
                 ;;
-            "phpmyadmin")
-                phpmyadminVrs=$A
+            "vsftpd")
+                vsftpdVrs=$A
                 optionMatch=1;
                 ;;
             esac
@@ -48,53 +71,105 @@ else
     done
 
     # Checking one or two things before we begin
-    if ((${#phpVrs} == 0 || ${#mysqlVrs} == 0 )); then
+    if [ ${#phpVrs} == 0 ]; then
         echo -e "\e[1m\e[101mERROR :\e[0m option list need at least a PHP version and database type"
         exit 1
     fi
 
+    if (( $svcMysql == 2 )); then
+        echo -e "\e[1m\e[101mERROR :\e[0m Both mariadb and mysql are enabled. Please remove one of them."
+        exit 1
+    fi
+
     # Everything seems ok so far so we continue
-    echo "Preparing initial files"
-    rm ./docker-compose.yml
-    cp dc-begin.txt docker-compose.yml
-    cp env-begin.txt .env
+    echo "Preparing initial files";
+    if [ -f "./docker-compose.yml" ]; then 
+        rm ./docker-compose.yml 
+    fi 
+    if [ -f "./.env" ]; then 
+        rm ./.env 
+    fi 
+    cp ./dc/dc-begin.yml docker-compose.yml
+    cp ./env/env-begin.env .env
 
     # Environment for PHP
-    echo "Preparing PHP files"
-    cat dc-php.txt >> docker-compose.yml
-    cat env-php.txt >> .env
+    echo "Preparing PHP files";
+    cat ./dc/dc-php.yml >> docker-compose.yml
+    cat ./env/env-php.env >> .env
     sed -i "s/phpVrsString/"$phpVrs"/g" .env
 
     # Environment for mysql
-    echo "Preparing mysql files"
-    cat dc-mysql.txt >> docker-compose.yml
-    cat env-mysql.txt >> .env
-    sed -i "s/mysqlVrsString/"$mysqlVrs"/g" .env
+    if [ ${#mysqlVrs} != 0 ]; then
+        echo "Preparing mysql files"
+        cat ./dc/dc-mysql.yml >> docker-compose.yml
+        cat ./env/env-mysql.env >> .env
+        sed -i "s/mysqlVrsString/"$mysqlVrs"/g" .env
+    fi
+
+    # Environment for mysql
+    if [ ${#mariadbVrs} != 0 ]; then
+        echo "Preparing mariadb files"
+        cat ./dc/dc-mariadb.yml >> docker-compose.yml
+        cat ./env/env-mariadb.env >> .env
+        sed -i "s/mariadbVrsString/"$mariadbVrs"/g" .env
+    fi
 
     # Postgres
     if [ ${#postgresVrs} != 0 ]; then
         echo "Preparing postgres files"
-        cat dc-postgres.txt >> docker-compose.yml
-        cat env-postgres.txt >> .env
+        cat ./dc/dc-postgres.yml >> docker-compose.yml
+        cat ./env/env-postgres.env >> .env
         sed -i "s/postgresVrsString/"$postgresVrs"/g" .env
+    fi
+
+    # Redis
+    if [ ${#redisVrs} != 0 ]; then
+        echo "Preparing redis files"
+        cat ./dc/dc-redis.yml >> docker-compose.yml
+        cat ./env/env-redis.env >> .env
     fi
 
     # Midnight Commander
     if [ ${#mcVrs} != 0 ]; then
         echo "Preparing mc files"
-        cat dc-mc.txt >> docker-compose.yml
-        cat env-mc.txt >> .env
+        cat ./dc/dc-mc.yml >> docker-compose.yml
+        cat ./env/env-mc.env >> .env
         sed -i "s/mcVrsString/"$mcVrs"/g" .env
     fi
+
     # PHPMyAdmin
     if [ ${#phpmyadminVrs} != 0 ]; then
-        echo "Preparing mc files"
-        cat dc-mc.txt >> docker-compose.yml
-        cat env-mc.txt >> .env
+        echo "Preparing PHPMyAdmin files (PHPMyAdmin is on the port 5000)"
+        cat ./dc/dc-phpmyadmin.yml >> docker-compose.yml
+        cat ./env/env-phpmyadmin.env >> .env
         sed -i "s/phpmyadminVrsString/"$phpmyadminVrs"/g" .env
     fi
+
+    # Adminer
+    if [ ${#adminerVrs} != 0 ]; then
+        echo "Preparing Adminer files (Adminer is on the port 9000)"
+        cat ./dc/dc-adminer.yml >> docker-compose.yml
+        cat ./env/env-adminer.env >> .env
+        sed -i "s/adminerVrsString/"$adminerVrs"/g" .env
+    fi
+    
+    # vsftpd
+    # Vérifier les bizareries
+    # https://hub.docker.com/r/fauria/vsftpd/dockerfile
+    if [ ${#vsftpdVrs} != 0 ]; then
+        echo "Preparing vsftpd files"
+        cat ./dc/dc-vsftpd.yml >> docker-compose.yml
+        cat ./env/env-vsftpd.env >> .env
+        sed -i "s/vsftpdVrsString/"$vsftpdVrs"/g" .env
+    fi
+
     echo -e "\e[42mMoving files in the main directory and we're done.\e[0m"
-    rm -rf ../docker-compose.yml ../.env
+        if [ -f "../docker-compose.yml" ]; then 
+        rm ../docker-compose.yml
+    fi 
+    if [ -f "../.env" ]; then 
+        rm ../.env 
+    fi 
     mv ./docker-compose.yml ../
     mv ./.env ../
 fi

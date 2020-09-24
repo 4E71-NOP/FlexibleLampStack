@@ -6,8 +6,8 @@ services:
   webserver:
     build: 
       context: ./containers/${PHP_FOLDER}
-    container_name: '${PROJECT_BASENAME}-${PHP_FOLDER}'
-    restart: 'always'
+    container_name: "${PROJECT_BASENAME}-${PHP_FOLDER}"
+    restart: "always"
     ports:
       - "${HOST_MACHINE_HTTP_PORT}:80"
       - "${HOST_MACHINE_HTTPS_PORT}:443"
@@ -20,70 +20,42 @@ services:
       - ${LOG_DIR-./logs/apache2}:/var/log/apache2
     environment:
       PMA_PORT: ${HOST_MACHINE_PMA_PORT}
-
 #--------------------------------------------------------------------------------------------------
-# Mysql database
+# MariaDB database
   mysql:
     build:
-      context: "./containers/${MYSQL_FOLDER}"
-    container_name: '${PROJECT_BASENAME}-${MYSQL_FOLDER}'
-    restart: 'always'
+      context: "./containers/${MARIADB_FOLDER}"
+    container_name: "${PROJECT_BASENAME}-${MARIADB_FOLDER}"
+    restart: "always"
     ports:
-      - "127.0.0.1:${HOST_MACHINE_MYSQL_PORT}:3306"
+      - "127.0.0.1:${HOST_MACHINE_MARIADB_PORT}:3306"
     volumes: 
-      - ${MYSQL_DATA_DIR-./data/mysql}:/var/lib/mysql
-      - ${MYSQL_LOG_DIR-./logs/mysql}:/var/log/mysql
+      - ${MARIADB_DATA_DIR-./data/mariadb}:/var/lib/mariadb
+      - ${MARIADB_LOG_DIR-./logs/mariadb}:/var/log/mariadb
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-
+      MYSQL_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MARIADB_DATABASE}
+      MYSQL_USER: ${MARIADB_USER}
+      MYSQL_PASSWORD: ${MARIADB_PASSWORD}
 #--------------------------------------------------------------------------------------------------
-# Midnight commander + openSSH
-  midnight-commander:
-    build:
-      context: "./containers/${MC_FOLDER}"
-    container_name: '${PROJECT_BASENAME}-mc'
-    restart: unless-stopped
-    #links: 
-     # - webserver
-    cap_drop:
-      - ALL
-    cap_add:
-      - CHOWN
-      - SETGID
-      - SETUID
-      - SYS_CHROOT
-    ports:
-      - 2222:2222/tcp
-    # Some examples of environment variables. See Dockerfile for more information.
+# PHPMyAdmin
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: "${PROJECT_BASENAME}-phpmyadmin"
+    restart: "always"
     environment:
-      MC_SUPPLEMENTARY_GIDS: "12345 12346"
-      MC_AUTHORIZED_KEYS: | 
-        ssh-rsa AAAA... me@machine
-        ssh-rsa AAAA... you@machine
-    #  TERM: "/usr/bin/bash"
-    # Docker-compose offers a mechanism for passwords called "secrets", but it requires
-    # compose file version 3.1. Alternatively, mount the secrets file manually.
-    # secrets:
-    #   - mc_password
-    volumes:
-      - ./data/etc/ssh/:/etc/ssh/
-      - ./data/www/html/:/var/www/html/
-      - ./data/ssh-default:/etc/ssh-default/
-
-      # You can mount multiple sources by using e.g. /data/data1, /data/data2 as mountpoints.
-      - /mnt/my-arbitrary-data-dir:/data 
-      # If not using docker-compose for secrets, mount a file containing the password manually.
-      # - ./secrets/mc_password:/run/secrets/mc_password:ro
-
-# secrets:
-#   mc_password:
-#     # Put the password in this file without anything else.
-#     file: ./secrets/mc_password
-
-# volumes:
-  # This volume will contain server keys and configuration
-#  midnight-commander: {}
-
+      PMA_HOST: ${PMA_HOST}
+      # PMA_PORT: ${PMA_PORT}
+      # PMA_USER: ${PMA_USER}
+      # PMA_PASSWORD: ${PMA_PASSWORD}
+      # MYSQL_ROOT_PASSWORD: ${PMA_SUPER_PASSWORD}
+      # MYSQL_USER: ${PMA_SUPER_USER}
+      # MYSQL_PASSWORD: ${PMA_SUPER_PASSWORD}
+      PMA_ARBITRARY: 1
+    ports:
+      - "${HOST_MACHINE_PMA_PORT}:8080"
+    # links:
+    #   - mysql
+    # volumes:
+    #   - /sessions
+    #   - ${PHP_INI-./config/php/php.ini}:/usr/local/etc/php/conf.d/php-phpmyadmin.ini
