@@ -22,7 +22,6 @@
       MC_AUTHORIZED_KEYS: | 
         ssh-rsa AAAA... me@machine
         ssh-rsa AAAA... you@machine
-    #  TERM: "/usr/bin/bash"
     # Docker-compose offers a mechanism for passwords called "secrets", but it requires
     # compose file version 3.1. Alternatively, mount the secrets file manually.
     # secrets:
@@ -43,6 +42,6 @@
 #     file: ./secrets/mc_password
 
 # volumes:
-  # This volume will contain server keys and configuration
+# This volume will contain server keys and configuration
 #  midnight-commander: {}
 
