@@ -11,15 +11,14 @@ services:
     ports:
       - "${HOST_MACHINE_HTTP_PORT}:80"
       - "${HOST_MACHINE_HTTPS_PORT}:443"
-    links: 
-      - mysql
     volumes: 
       - ${DOCUMENT_ROOT-./data/www/html}:/var/www/html
       - ${PHP_INI-./config/php/php.ini}:/usr/local/etc/php/php.ini
       - ${VHOSTS_DIR-./config/vhosts/}:/etc/apache2/sites-enabled
       - ${LOG_DIR-./logs/apache2}:/var/log/apache2
-    environment:
-      PMA_PORT: ${HOST_MACHINE_PMA_PORT}
+    # Only if you need it.
+    # environment:
+    #   PMA_PORT: ${HOST_MACHINE_PMA_PORT}
 #--------------------------------------------------------------------------------------------------
 # MariaDB database
   mysql:
@@ -38,24 +37,95 @@ services:
       MYSQL_USER: ${MARIADB_USER}
       MYSQL_PASSWORD: ${MARIADB_PASSWORD}
 #--------------------------------------------------------------------------------------------------
+# PostgresSQL
+  postgres:
+    image: postgres:latest
+    container_name: "${PROJECT_BASENAME}-postgres"
+    restart: "always"
+    ports:
+      - "127.0.0.1:${HOST_MACHINE_POSTGRES_PORT}:5432"
+    volumes:
+      - ${POSTGRES_DATA_DIR-./data/postgres}:/var/lib/postgres
+      - ${POSTGRES_LOG_DIR-./logs/postgres}:/var/log/postgres
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_DB: ${POSTGRES_DATABASE}
+      # Only if you need it.
+      # POSTGRES_INITDB_ARGS
+      # POSTGRES_INITDB_WALDIR
+      # POSTGRES_HOST_AUTH_METHOD
+#--------------------------------------------------------------------------------------------------
+# Midnight commander + openSSH
+  midnight-commander:
+    build:
+      context: "./containers/${MC_FOLDER}"
+    container_name: "${PROJECT_BASENAME}-mc"
+    restart: "unless-stopped"
+    cap_drop:
+      - ALL
+    cap_add:
+      - CHOWN
+      - SETGID
+      - SETUID
+      - SYS_CHROOT
+    ports:
+      - "2222:2222/tcp"
+    volumes:
+      - ./data/etc/ssh/:/etc/ssh/
+      - ./data/www/html/:/var/www/html/
+      - ./data/ssh-default:/etc/ssh-default/
+    #   If not using docker-compose for secrets, mount a file containing the password manually.
+    #   - ./secrets/mc_password:/run/secrets/mc_password:ro
+    # Some examples of environment variables. See Dockerfile for more information.
+    environment:
+      MC_SUPPLEMENTARY_GIDS: "12345 12346"
+      MC_AUTHORIZED_KEYS: | 
+        ssh-rsa AAAA... me@machine
+        ssh-rsa AAAA... you@machine
+    # Docker-compose offers a mechanism for passwords called "secrets", but it requires
+    # compose file version 3.1. Alternatively, mount the secrets file manually.
+    # secrets:
+    #   - mc_password
+# secrets:
+#   mc_password:
+#     # Put the password in this file without anything else.
+#     file: ./secrets/mc_password
+#--------------------------------------------------------------------------------------------------
 # PHPMyAdmin
   phpmyadmin:
     image: phpmyadmin:latest
     container_name: "${PROJECT_BASENAME}-phpmyadmin"
     restart: "always"
+    depends_on:
+      - webserver
+      - mysql
+    ports:
+      - "${HOST_MACHINE_PMA_PORT}:80"
     environment:
-      PMA_HOST: ${PMA_HOST}
+      PMA_ARBITRARY: 1
+      # Only if you need it.
+      # PMA_HOST: ${PMA_HOST}
       # PMA_PORT: ${PMA_PORT}
       # PMA_USER: ${PMA_USER}
       # PMA_PASSWORD: ${PMA_PASSWORD}
       # MYSQL_ROOT_PASSWORD: ${PMA_SUPER_PASSWORD}
       # MYSQL_USER: ${PMA_SUPER_USER}
       # MYSQL_PASSWORD: ${PMA_SUPER_PASSWORD}
-      PMA_ARBITRARY: 1
+    volumes:
+      - /sessions
+      - ${PHP_INI-./config/php/php.ini}:/usr/local/etc/php/conf.d/php-phpmyadmin.ini
+#--------------------------------------------------------------------------------------------------
+# Adminer
+  adminer:
+    image: adminer:latest
+    container_name: "${PROJECT_BASENAME}-adminer"
+    restart: always
+    depends_on:
+      - webserver
+      - mysql
     ports:
-      - "${HOST_MACHINE_PMA_PORT}:8080"
-    # links:
-    #   - mysql
-    # volumes:
-    #   - /sessions
-    #   - ${PHP_INI-./config/php/php.ini}:/usr/local/etc/php/conf.d/php-phpmyadmin.ini
+      - "8088:8080"
+    # Only if you need it.
+    # environment:
+    #   ADMINER_DESIGN: ${ADMINER_DESIGN}

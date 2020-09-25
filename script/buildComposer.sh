@@ -82,7 +82,7 @@ else
     fi
 
     # Everything seems ok so far so we continue
-    echo "Preparing initial files";
+    echo "Copying initial files";
     if [ -f "./docker-compose.yml" ]; then 
         rm ./docker-compose.yml 
     fi 
@@ -93,14 +93,14 @@ else
     cp ./env/env-begin.env .env
 
     # Environment for PHP
-    echo "Preparing PHP files";
+    echo "Adding PHP";
     cat ./dc/dc-php.yml >> docker-compose.yml
     cat ./env/env-php.env >> .env
     sed -i "s/phpVrsString/"$phpVrs"/g" .env
 
     # Environment for mysql
     if [ ${#mysqlVrs} != 0 ]; then
-        echo "Preparing mysql files"
+        echo "Adding mysql"
         cat ./dc/dc-mysql.yml >> docker-compose.yml
         cat ./env/env-mysql.env >> .env
         sed -i "s/mysqlVrsString/"$mysqlVrs"/g" .env
@@ -108,7 +108,7 @@ else
 
     # Environment for mysql
     if [ ${#mariadbVrs} != 0 ]; then
-        echo "Preparing mariadb files"
+        echo "Adding mariadb"
         cat ./dc/dc-mariadb.yml >> docker-compose.yml
         cat ./env/env-mariadb.env >> .env
         sed -i "s/mariadbVrsString/"$mariadbVrs"/g" .env
@@ -116,7 +116,7 @@ else
 
     # Postgres
     if [ ${#postgresVrs} != 0 ]; then
-        echo "Preparing postgres files"
+        echo "Adding postgres"
         cat ./dc/dc-postgres.yml >> docker-compose.yml
         cat ./env/env-postgres.env >> .env
         sed -i "s/postgresVrsString/"$postgresVrs"/g" .env
@@ -124,14 +124,14 @@ else
 
     # Redis
     if [ ${#redisVrs} != 0 ]; then
-        echo "Preparing redis files"
+        echo "Adding redis"
         cat ./dc/dc-redis.yml >> docker-compose.yml
         cat ./env/env-redis.env >> .env
     fi
 
     # Midnight Commander
     if [ ${#mcVrs} != 0 ]; then
-        echo "Preparing mc files"
+        echo "Adding mc"
         cat ./dc/dc-mc.yml >> docker-compose.yml
         cat ./env/env-mc.env >> .env
         sed -i "s/mcVrsString/"$mcVrs"/g" .env
@@ -139,7 +139,7 @@ else
 
     # PHPMyAdmin
     if [ ${#phpmyadminVrs} != 0 ]; then
-        echo "Preparing PHPMyAdmin files (PHPMyAdmin is on the port 5000)"
+        echo "Adding PHPMyAdmin (PHPMyAdmin is on the port 8080)"
         cat ./dc/dc-phpmyadmin.yml >> docker-compose.yml
         cat ./env/env-phpmyadmin.env >> .env
         sed -i "s/phpmyadminVrsString/"$phpmyadminVrs"/g" .env
@@ -147,7 +147,7 @@ else
 
     # Adminer
     if [ ${#adminerVrs} != 0 ]; then
-        echo "Preparing Adminer files (Adminer is on the port 9000)"
+        echo "Adding Adminer (Adminer is on the port 8088)"
         cat ./dc/dc-adminer.yml >> docker-compose.yml
         cat ./env/env-adminer.env >> .env
         sed -i "s/adminerVrsString/"$adminerVrs"/g" .env
@@ -157,7 +157,7 @@ else
     # Vérifier les bizareries
     # https://hub.docker.com/r/fauria/vsftpd/dockerfile
     if [ ${#vsftpdVrs} != 0 ]; then
-        echo "Preparing vsftpd files"
+        echo "Adding vsftpd"
         cat ./dc/dc-vsftpd.yml >> docker-compose.yml
         cat ./env/env-vsftpd.env >> .env
         sed -i "s/vsftpdVrsString/"$vsftpdVrs"/g" .env

@@ -5,8 +5,6 @@
       context: "./containers/${MC_FOLDER}"
     container_name: "${PROJECT_BASENAME}-mc"
     restart: "unless-stopped"
-    #links: 
-     # - webserver
     cap_drop:
       - ALL
     cap_add:
@@ -16,6 +14,12 @@
       - SYS_CHROOT
     ports:
       - "2222:2222/tcp"
+    volumes:
+      - ./data/etc/ssh/:/etc/ssh/
+      - ./data/www/html/:/var/www/html/
+      - ./data/ssh-default:/etc/ssh-default/
+    #   If not using docker-compose for secrets, mount a file containing the password manually.
+    #   - ./secrets/mc_password:/run/secrets/mc_password:ro
     # Some examples of environment variables. See Dockerfile for more information.
     environment:
       MC_SUPPLEMENTARY_GIDS: "12345 12346"
@@ -26,21 +30,7 @@
     # compose file version 3.1. Alternatively, mount the secrets file manually.
     # secrets:
     #   - mc_password
-    volumes:
-      - ./data/etc/ssh/:/etc/ssh/
-      - ./data/www/html/:/var/www/html/
-      - ./data/ssh-default:/etc/ssh-default/
-
-      # You can mount multiple sources by using e.g. /data/data1, /data/data2 as mountpoints.
-      - /mnt/my-arbitrary-data-dir:/data 
-      # If not using docker-compose for secrets, mount a file containing the password manually.
-      # - ./secrets/mc_password:/run/secrets/mc_password:ro
-
 # secrets:
 #   mc_password:
 #     # Put the password in this file without anything else.
 #     file: ./secrets/mc_password
-
-# volumes:
-# This volume will contain server keys and configuration
-#  midnight-commander: {}

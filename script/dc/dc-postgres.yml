@@ -1,9 +1,7 @@
 #--------------------------------------------------------------------------------------------------
 # PostgresSQL
   postgres:
-    image: postgres
-#    build:
-#      context: "./containers/${POSTGRES_FOLDER}"
+    image: postgres:latest
     container_name: "${PROJECT_BASENAME}-postgres"
     restart: "always"
     ports:
@@ -15,6 +13,7 @@
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_DB: ${POSTGRES_DATABASE}
+      # Only if you need it.
       # POSTGRES_INITDB_ARGS
       # POSTGRES_INITDB_WALDIR
       # POSTGRES_HOST_AUTH_METHOD
