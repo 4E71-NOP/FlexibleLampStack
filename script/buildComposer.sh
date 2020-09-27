@@ -106,7 +106,7 @@ else
         sed -i "s/mysqlVrsString/"$mysqlVrs"/g" .env
     fi
 
-    # Environment for mysql
+    # Environment for mariadb
     if [ ${#mariadbVrs} != 0 ]; then
         echo "Adding mariadb"
         cat ./dc/dc-mariadb.yml >> docker-compose.yml
