@@ -4,18 +4,26 @@ echo ("
 <head>	
 <style type='text/css'>
 <!--
+body {\r
+    font-family: 'arial';\r
+}\r
 h1 {\r
-    background-color: #00000020;\r
+    background-color: #40804080;\r
     padding:10px;\r
+    font-style: italic;\r
+    color : #FFFFFF;\r
+    text-shadow: #000000C0 2px 2px 3px;\r
 }\r
 h4 {\r
-    background-color: #00008020;\r
+    background-color: #00008080;\r
     padding:10px;\r
+    color : #FFFFFF;\r
+    text-shadow: #000000C0 2px 2px 3px;\r
 }\r
 table {\r
     width: 60%;\r
-    margin-left: auto;
-    margin-right: auto;
+    margin-left: auto;\r
+    margin-right: auto;\r
 }\r
 table > tbody > tr {\r
     background-color: #00808040;\r
@@ -107,6 +115,10 @@ echo (var_dump ( PDO::getAvailableDrivers () ));
 echo ("</p>");
 
 echo ("
+<hr>
+<p>
+Part of Flexible LAMP Stack.
+</p>
     </body>
     </html>
 ");
