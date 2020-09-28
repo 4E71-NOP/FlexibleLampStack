@@ -65,14 +65,14 @@ else
                 ;;
             esac
         if [ $optionMatch -eq 0 ]; then 
-            echo -e "\e[1m\e[101mERROR : \e[0mArgument '"$A"' is not in the available option list"
+            echo -e "\e[1m\e[101mERROR : \e[0mArgument '"$A"' is not in the available option list."
             exit 1
         fi
     done
 
     # Checking one or two things before we begin
     if [ ${#phpVrs} == 0 ]; then
-        echo -e "\e[1m\e[101mERROR :\e[0m option list need at least a PHP version and database type"
+        echo -e "\e[1m\e[101mERROR :\e[0m option list need at least a PHP version and database type."
         exit 1
     fi
 
