@@ -12,10 +12,10 @@ services:
       - "${HOST_MACHINE_HTTP_PORT}:80"
       - "${HOST_MACHINE_HTTPS_PORT}:443"
     volumes: 
-      - ${DOCUMENT_ROOT-./data/www/html}:/var/www/html
-      - ${PHP_INI-./config/php/php.ini}:/usr/local/etc/php/php.ini
-      - ${VHOSTS_DIR-./config/vhosts/}:/etc/apache2/sites-enabled
-      - ${LOG_DIR-./logs/apache2}:/var/log/apache2
+      - ${DOCUMENT_ROOT}:/var/www/html
+      - ${PHP_INI}:/usr/local/etc/php/php.ini
+      - ${VHOSTS_DIR}:/etc/apache2/sites-enabled
+      - ${APACHE_LOG_DIR}:/var/log/apache2
       - ./files/LiberationMono-Regular.ttf:/usr/share/fonts/truetype/liberation/LiberationMono-Regular.ttf
     # Only if you need it.
     # environment:
@@ -30,8 +30,8 @@ services:
     ports:
       - "127.0.0.1:${HOST_MACHINE_MARIADB_PORT}:3306"
     volumes: 
-      - ${MARIADB_DATA_DIR-./data/mariadb}:/var/lib/mariadb
-      - ${MARIADB_LOG_DIR-./logs/mariadb}:/var/log/mariadb
+      - ${MARIADB_DATA_DIR}:/var/lib/mariadb
+      - ${MARIADB_LOG_DIR}:/var/log/mariadb
     environment:
       MYSQL_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MARIADB_DATABASE}
@@ -46,8 +46,8 @@ services:
     ports:
       - "127.0.0.1:${HOST_MACHINE_POSTGRES_PORT}:5432"
     volumes:
-      - ${POSTGRES_DATA_DIR-./data/postgres}:/var/lib/postgres
-      - ${POSTGRES_LOG_DIR-./logs/postgres}:/var/log/postgres
+      - ${POSTGRES_DATA_DIR}:/var/lib/postgres
+      - ${POSTGRES_LOG_DIR}:/var/log/postgres
     environment:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_USER: ${POSTGRES_USER}
@@ -121,7 +121,7 @@ services:
       # MYSQL_PASSWORD: ${PMA_SUPER_PASSWORD}
     volumes:
       - /sessions
-      - ${PHP_INI-./config/php/php.ini}:/usr/local/etc/php/conf.d/php-phpmyadmin.ini
+      - ${PHP_INI}:/usr/local/etc/php/conf.d/php-phpmyadmin.ini
 #--------------------------------------------------------------------------------------------------
 # Adminer
   adminer:

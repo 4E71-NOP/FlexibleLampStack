@@ -8,8 +8,8 @@
     ports:
       - "127.0.0.1:${HOST_MACHINE_MARIADB_PORT}:3306"
     volumes: 
-      - ${MARIADB_DATA_DIR-./data/mariadb}:/var/lib/mariadb
-      - ${MARIADB_LOG_DIR-./logs/mariadb}:/var/log/mariadb
+      - ${MARIADB_DATA_DIR}:/var/lib/mariadb
+      - ${MARIADB_LOG_DIR}:/var/log/mariadb
     environment:
       MYSQL_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MARIADB_DATABASE}

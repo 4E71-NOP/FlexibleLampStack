@@ -3,10 +3,12 @@ docker-compose.yml
 logs/apache2/*
 logs/mariadb/*
 logs/mysql/*
+logs/mysql8/*
 logs/postgres/*
 data/apache2/*
 data/mariadb/*
 data/mysql/*
+data/mysql8/*
 data/postgres/*
 data/etc/ssh/ssh_host*
 data/etc/ssh/moduli
