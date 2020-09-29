@@ -63,8 +63,7 @@ List files (ls) in the second terminal. Now both *docker-compose* and *.env* fil
 ---
 
 # Make sure it works
-in `/data/www/html` there are 6 files. Those files will help you test everything is okay.
-* Demo_ConeriaScript.ttf
+in `/data/www/html` there are 5 files. Those files will help you test everything is okay.
 * gd_image.php
 * gd_imagettf.php
 * index.html
@@ -110,9 +109,8 @@ The font directory is usually empty on docker. If you want to use fonts with GD 
 * Include vsftpd
 * Include some CMS like wordpress, dupral etc.
 
-I'm open to suggestions. Feel fre to open a request in the corresponding section of this depot if you want to. 
+I'm open to suggestions. Feel free to open a request in the corresponding section of this depot. 
 
 # Bugs
-
 I'll do my best to help. 
 
