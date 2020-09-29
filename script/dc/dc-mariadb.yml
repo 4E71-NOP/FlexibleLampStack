@@ -1,0 +1,17 @@
+#--------------------------------------------------------------------------------------------------
+# MariaDB database
+  mysql:
+    build:
+      context: "./containers/${MARIADB_FOLDER}"
+    container_name: "${PROJECT_BASENAME}-${MARIADB_FOLDER}"
+    restart: "always"
+    ports:
+      - "127.0.0.1:${HOST_MACHINE_MARIADB_PORT}:3306"
+    volumes: 
+      - ${MARIADB_DATA_DIR}:/var/lib/mariadb
+      - ${MARIADB_LOG_DIR}:/var/log/mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MARIADB_DATABASE}
+      MYSQL_USER: ${MARIADB_USER}
+      MYSQL_PASSWORD: ${MARIADB_PASSWORD}
