@@ -6,9 +6,8 @@
     container_name: "${PROJECT_BASENAME}-${VSFTPD_FOLDER}"
     restart: "always"
     ports:
-      - "${HOST_MACHINE_FTP_PORT1}:20"
-      - "${HOST_MACHINE_FTP_PORT2}:21"
-      - 21100-21110:21100-21110
+      - "${HOST_MACHINE_FTP_PORT}:21"
+      - "40000-40100:40000-40100"
     volumes: 
       - ./data/etc/vsftpd/vsftpd.conf:/etc/vsftpd.conf
       - ./data/etc/vsftpd/vsftpd.chroot_list:/etc/vsftpd.chroot_list

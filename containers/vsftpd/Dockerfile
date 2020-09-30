@@ -23,4 +23,3 @@ RUN echo "flexible:flexible" | chpasswd
 
 RUN cat /etc/vsftpd.conf
 RUN cat /etc/vsftpd.chroot_list
-RUN cat /etc/passwd
