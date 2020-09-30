@@ -9,6 +9,7 @@ if [ ${#1} = 0 ]; then
 else 
     echo -e "Building \e[1m\docker-compose.yml\e[0m file.";
     echo -e "Argument list contains : \e[1m"$1"\e[0m.";
+    nockeck=0;
     phpVrs="";
     mysqlVrs="";
     mariadbVrs="";
@@ -21,12 +22,16 @@ else
     pureftpdVrs="";
     svcMysql=0;
     svcFtp=0
-    optionList='php54 php56 php71 php72 php73 php74 mariadb mysql mysql8 postgress redis phpmyadmin adminer mc pure-ftpd';
+    optionList='php54 php56 php71 php72 php73 php74 mariadb mysql mysql8 postgress redis phpmyadmin adminer mc pure-ftpd nocheck';
     for A in $1
     do
         optionMatch=0;
         # echo "O="$O" ; A="$A;
             case $A in
+            "nocheck")
+                nockeck=1
+                optionMatch=1;
+                ;;
             "php54"|"php56"|"php71"|"php72"|"php73"|"php74")
                 phpVrs=$A
                 optionMatch=1;
@@ -78,22 +83,25 @@ else
         fi
     done
 
-    # Checking one or two things before we begin
-    if [ ${#phpVrs} == 0 ]; then
-        echo -e "\e[1m\e[101mERROR :\e[0m option list need at least a PHP version and database type."
-        exit 1
-    fi
+    if [ $nockeck -eq 0 ]; then 
+        # Checking one or two things before we begin
+        if [ ${#phpVrs} == 0 ]; then
+            echo -e "\e[1m\e[101mERROR :\e[0m option list need at least a PHP version and database type."
+            exit 1
+        fi
 
-    if (( $svcFtp == 2 )); then
-        echo -e "\e[1m\e[101mERROR :\e[0m Both vsftpd and pure-ftp are enabled. Please remove one of them."
-        exit 1
-    fi
+        if (( $svcFtp == 2 )); then
+            echo -e "\e[1m\e[101mERROR :\e[0m Both vsftpd and pure-ftp are enabled. Please remove one of them."
+            exit 1
+        fi
 
-    if (( $svcMysql == 2 )); then
-        echo -e "\e[1m\e[101mERROR :\e[0m Both mariadb and mysql are enabled. Please remove one of them."
-        exit 1
+        if (( $svcMysql == 2 )); then
+            echo -e "\e[1m\e[101mERROR :\e[0m Both mariadb and mysql are enabled. Please remove one of them."
+            exit 1
+        fi
+    else
+        echo -e "\e[5m\e[1m\e[46m** WARNING **\e[25m\e[93m : You used the 'nocheck' option. It means you're SUPPOSED TO KNOW WHAT YOU'RE DOING. Right?\e[0m"
     fi
-
     # Everything seems ok so far so we continue
     echo "Copying initial files";
     if [ -f "./docker-compose.yml" ]; then 
@@ -167,8 +175,8 @@ else
     fi
     
     # vsftpd
-    # Vérifier les bizareries
-    # https://hub.docker.com/r/fauria/vsftpd/dockerfile
+    # the code to add it in the composer is ready. The container is NOT.
+    # What the hell is wrong with that one ?
     if [ ${#vsftpdVrs} != 0 ]; then
         echo "Adding vsftpd"
         cat ./dc/dc-vsftpd.yml >> docker-compose.yml
