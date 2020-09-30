@@ -13,9 +13,7 @@
       - ./logs/vsftpd:/var/log/vsftpd
       - ./data/www/html/:/var/www/html
       - ./data/etc/vsftpd/vsftpd.conf:/etc/vsftpd.conf
-      # - ./data/etc/vsftpd/vsftpd.chroot_list:/etc/vsftpd.chroot_list
-      - ./data/vsftpd/vsftpd.log:/var/log/vsftpd.log
-      # - ./data/vsftpd/:/var/run/vsftpd/empty/
+      - ./log/vsftpd/vsftpd.log:/var/log/vsftpd.log
     # environment:
       # - "USER_ID:1000"
       # - "GROUP_ID:1000"

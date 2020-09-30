@@ -14,16 +14,22 @@
       - SYS_CHROOT
     ports:
       - "2222:2222/tcp"
+    # many volume because many services in there
     volumes:
       - ./data/etc/ssh/:/etc/ssh/
       - ./data/www/html/:/var/www/html/
-      - ./data/ssh-default:/etc/ssh-default/
+      - ./data/etc/ssh-default:/etc/ssh-default/
       - ./data/mysql:/var/lib/mysql/
       - ./logs/mysql:/var/log/mysql/
       - ./data/mysql8:/var/lib/mysql8/
       - ./logs/mysql8:/var/log/mysql8/
       - ./data/mariadb:/var/lib/mariadb/
       - ./logs/mariadb:/var/log/mariadb/
+      - ./data/etc/php/php.ini:/usr/local/etc/php/php.ini
+      - ./data/etc/apache2/sites-enabled:/etc/apache2/sites-enabled
+      - ./logs/apache2:/var/log/apache2
+      - ./data/postgres:/var/lib/postgres
+      - ./logs/postgres:/var/log/postgres
     #   If not using docker-compose for secrets, mount a file containing the password manually.
     #   - ./secrets/mc_password:/run/secrets/mc_password:ro
     # Some examples of environment variables. See Dockerfile for more information.
