@@ -1,0 +1,33 @@
+#--------------------------------------------------------------------------------------------------
+# vsftpd
+  vsftpd:
+    build: 
+      context: ./containers/${VSFTPD_FOLDER}
+    container_name: "${PROJECT_BASENAME}-${VSFTPD_FOLDER}"
+    restart: "always"
+    privileged: true
+    ports:
+      - "0.0.0.0:${HOST_MACHINE_FTP_PORT}:21"
+      - "40000-40100:40000-40100"
+    volumes: 
+      - ./logs/vsftpd:/var/log/vsftpd
+      - ./data/www/html/:/var/www/html
+      - ./data/etc/vsftpd/vsftpd.conf:/etc/vsftpd.conf
+      # - ./data/etc/vsftpd/vsftpd.chroot_list:/etc/vsftpd.chroot_list
+      - ./data/vsftpd/vsftpd.log:/var/log/vsftpd.log
+      # - ./data/vsftpd/:/var/run/vsftpd/empty/
+    # environment:
+      # - "USER_ID:1000"
+      # - "GROUP_ID:1000"
+      # - FTP_USER:flexible
+      # - FTP_PASS:flexible
+      # - PASV_ADDRESS:0.0.0.0
+      # - PASV_ADDR_RESOLVE:NO
+      # - PASV_ENABLE:YES
+      # - PASV_MIN_PORT:40000
+      # - PASV_MAX_PORT:40100
+      # - XFERLOG_STD_FORMAT:NO
+      # - LOG_STDOUT:true
+      # - FILE_OPEN_MODE:0666
+      # - LOCAL_UMASK:077
+      # - REVERSE_LOOKUP_ENABLE:YES

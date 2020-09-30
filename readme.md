@@ -28,14 +28,14 @@ There is a set of options to tell the script how to 'assemble' the docker-compos
 
 Options:
 
-* **[php54; php56; php71; php72; php73; php74]** adds an apache-php service with mysql, postgres and gd (image stuff) extenssions.
+* **[php54; php56; php71; php72; php73; php74]** adds an apache-php service with mysql, postgres and gd (image stuff) extensions.
 * **[mysql; mysql8; mariadb]** adds mysql 5.7, 8 or mariadb. Note that the script forbids the use of 2 services sharing the same default port (3306 in this case). So you cannot do : `./buildComposer.sh 'php74 mariadb mysql'`. It will exit with an error.
 * **postgres** adds postgresSQL
 * **redis** adds redis
 * **phpmyadmin** adds phpmyadmin
 * **adminer** adds adminer
 * **mc** adds opsenSSH + Midnight Commander (login/pass mc/mc)
-
+* **pure-ftpd** adds pure-ftp server (login/pass flexible/flexible)
 
 # How to go further ?
 Open 2 terminals (it's better that way) on the project directory. On the first terminal, change directory to ***./script***. Then use the `buildComposer` script like the following.
@@ -63,8 +63,7 @@ List files (ls) in the second terminal. Now both *docker-compose* and *.env* fil
 ---
 
 # Make sure it works
-in `/data/www/html` there are 6 files. Those files will help you test everything is okay.
-* Demo_ConeriaScript.ttf
+in `/data/www/html` there are 5 files. Those files will help you test everything is okay.
 * gd_image.php
 * gd_imagettf.php
 * index.html
@@ -97,7 +96,7 @@ Make sure you build with docker-compose each time you change something.
 
  ## Commented options
 
-There is a number of evironement variables lines that are commented in the script/dc/dc-xxx.yml files. Those are not necessary for standart use. But if needed the user can enable those evironement variables.
+There is a number of evironement variables lines that are commented in the script/dc/dc-xxx.yml files. Those are not necessary for standart use. But if needed the user can enable those evironment variables.
 
 ## Directory separation
 
@@ -110,9 +109,8 @@ The font directory is usually empty on docker. If you want to use fonts with GD 
 * Include vsftpd
 * Include some CMS like wordpress, dupral etc.
 
-I'm open to suggestions. Feel fre to open a request in the corresponding section of this depot if you want to. 
+I'm open to suggestions. Feel free to open a request in the corresponding section of this depot. 
 
 # Bugs
-
 I'll do my best to help. 
 
