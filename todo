@@ -1,4 +1,4 @@
 
 [x] TODO move ./config into ./data/etc
 [x] TODO move ./data/ssh-defaults into ./data/etc/ssh-defaults
-[ ] TODO create an option so the check about service on the same (default) port does not stop the program
+[x] TODO create an option so the check about service on the same (default) port does not stop the program

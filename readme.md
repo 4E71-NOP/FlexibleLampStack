@@ -36,6 +36,7 @@ Options:
 * **adminer** adds adminer
 * **mc** adds opsenSSH + Midnight Commander (login/pass mc/mc)
 * **pure-ftpd** adds pure-ftp server (login/pass flexible/flexible)
+* **nocheck** special option to bypass checks. It means you can run both mariadb and mysql for example. But it will work only if you configure the containers/dc-files/env-files **properly** to avoid running services on the sames ports.
 
 # How to go further ?
 Open 2 terminals (it's better that way) on the project directory. On the first terminal, change directory to ***./script***. Then use the `buildComposer` script like the following.
