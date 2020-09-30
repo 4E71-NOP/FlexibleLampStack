@@ -5,8 +5,13 @@ This projet goal is to help web developpers to test their creations in many diff
 # Installation
 * Clone this repository on your local computer
 * Go to the `./script` folder and run : `./buildComposer.sh 'php74 mariadb'`
+* Go back one level `cd ..`
 * Run the command : `docker-compose build`.
 * Run the command : `docker-compose up`.
+* You're done.
+
+# Heavy duty installation 
+For those who want to build everything as fast as possible use the `hdi.sh` script. Depending on your connexion speed it will take some time. But after a while all images will be ready and you will be able to use `buildComposer` to setup the stack you want.
 
 # Configuration and Usage
 ## General Information
@@ -19,7 +24,7 @@ To configure the composer you can edit the files in `./script/dc/` and `./script
 
 Do **not** edit `docker-compose` and `.env` files directly as it will be overwritten as soon as you use the `/buildComposer.sh` script. We'll see that in the next section.
 
-Example: if you want to set mysql in another directory. Edit `./script/env/env-mysql.env` and set MYSQL_DATA_DIR and MYSQL_LOG_DIR to a directory of your liking. Then execute `/buildComposer.sh`.
+Example: if you want to set mysql in another directory. Edit `./script/env/env-mysql.env` and set MYSQL_DATA_DIR and MYSQL_LOG_DIR to a directory of your liking. Then execute `/buildComposer.sh 'php74 mysql`.
 
 
 ## Usage 
@@ -36,7 +41,7 @@ Options:
 * **adminer** adds adminer
 * **mc** adds opsenSSH + Midnight Commander (login/pass mc/mc)
 * **pure-ftpd** adds pure-ftp server (login/pass flexible/flexible)
-* **nocheck** special option to bypass checks. It means you can run both mariadb and mysql for example. But it will work only if you configure the containers/dc-files/env-files **properly** to avoid running services on the sames ports.
+* **nocheck** special option to bypass checks. It means you can run both mariadb and mysql for example. But it will work only if you configure the containers/dc-files/env-files **properly** to avoid running services on the same ports.
 
 # How to go further ?
 Open 2 terminals (it's better that way) on the project directory. On the first terminal, change directory to ***./script***. Then use the `buildComposer` script like the following.
@@ -74,7 +79,7 @@ in `/data/www/html` there are 5 files. Those files will help you test everything
 You can test 3 URIs from http://localhost
 * [index.html](http://locahost/index.html) is a simple html file. If many things go wrong, going back to HTML is good.
 * [info.php](http://locahost/info.php) is a standart **`php_info()`** which will output a complete info about PHP.
-* [phpcapabilitiestest.php](http://locahost/phpcapabilitiestest.php) is a test page including a connexion to mysql and postgres, and a GD drawing test. 
+* [phpcapabilitiestest.php](http://locahost/phpcapabilitiestest.php) is a test page including a connexion to mysql and postgres, and a GD drawing test. Expect errors if not mysql or postgres service is up.
 
 You can remove those files as well when all is ok for you. Then it's about configuration of volumes to suit your needs.
 
@@ -87,13 +92,23 @@ As you are building different configurations, if you re-use a previously built c
 Example:
 ```sh
 meMyselfAndI@mypc:mydir$ ./buildComposer.sh 'php54 mariadb postgress redis phpmyadmin adminer mc'
+meMyselfAndI@mypc:mydir$ cd ..
+meMyselfAndI@mypc:mydir$ docker-compose build
+meMyselfAndI@mypc:mydir$ cd script/
 meMyselfAndI@mypc:mydir$ ./buildComposer.sh 'php56 mysql'
-meMyselfAndI@mypc:mydir$ ./buildComposer.sh 'php71 mysql8'
-meMyselfAndI@mypc:mydir$ ./buildComposer.sh 'php72 mysql8'
-meMyselfAndI@mypc:mydir$ ./buildComposer.sh 'php73 mysql8'
+meMyselfAndI@mypc:mydir$ cd ..
+meMyselfAndI@mypc:mydir$ docker-compose build
+[...]
+meMyselfAndI@mypc:mydir$ cd ..
+meMyselfAndI@mypc:mydir$ docker-compose build
+meMyselfAndI@mypc:mydir$ cd script/
 meMyselfAndI@mypc:mydir$ ./buildComposer.sh 'php74 mysql8'
+meMyselfAndI@mypc:mydir$ cd ..
+meMyselfAndI@mypc:mydir$ docker-compose build
 ```
 Make sure you build with docker-compose each time you change something. 
+
+Also see **Heavy duty installation** above for a complete build.
 
  ## Commented options
 
@@ -114,4 +129,3 @@ I'm open to suggestions. Feel free to open a request in the corresponding sectio
 
 # Bugs
 I'll do my best to help. 
-
