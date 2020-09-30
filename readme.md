@@ -28,7 +28,7 @@ There is a set of options to tell the script how to 'assemble' the docker-compos
 
 Options:
 
-* **[php54; php56; php71; php72; php73; php74]** adds an apache-php service with mysql, postgres and gd (image stuff) extenssions.
+* **[php54; php56; php71; php72; php73; php74]** adds an apache-php service with mysql, postgres and gd (image stuff) extensions.
 * **[mysql; mysql8; mariadb]** adds mysql 5.7, 8 or mariadb. Note that the script forbids the use of 2 services sharing the same default port (3306 in this case). So you cannot do : `./buildComposer.sh 'php74 mariadb mysql'`. It will exit with an error.
 * **postgres** adds postgresSQL
 * **redis** adds redis
@@ -96,7 +96,7 @@ Make sure you build with docker-compose each time you change something.
 
  ## Commented options
 
-There is a number of evironement variables lines that are commented in the script/dc/dc-xxx.yml files. Those are not necessary for standart use. But if needed the user can enable those evironement variables.
+There is a number of evironement variables lines that are commented in the script/dc/dc-xxx.yml files. Those are not necessary for standart use. But if needed the user can enable those evironment variables.
 
 ## Directory separation
 

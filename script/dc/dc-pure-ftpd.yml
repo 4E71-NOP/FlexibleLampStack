@@ -1,0 +1,14 @@
+#--------------------------------------------------------------------------------------------------
+# pure-ftpd
+  pure-ftpd:
+    build: 
+      context: ./containers/${PUREFTPD_FOLDER}
+    container_name: "${PROJECT_BASENAME}-pure-ftpd"
+    restart: "always"
+    privileged: true
+    ports:
+      - "${HOST_MACHINE_PUREFTPD_PORT}:21"
+      - "40000-40100:40000-40100"
+    volumes:
+      - ./data/www/html:/var/www/html
+      - ./data/etc/pure-ftpd/:/etc/pure-ftpd/

@@ -18,8 +18,10 @@ else
     adminerVrs="";
     mcVrs="";
     vsftpdVrs="";
+    pureftpdVrs="";
     svcMysql=0;
-    optionList='php54 php56 php71 php72 php73 php74 mariadb mysql mysql8 postgress redis phpmyadmin adminer mc vsftpd';
+    svcFtp=0
+    optionList='php54 php56 php71 php72 php73 php74 mariadb mysql mysql8 postgress redis phpmyadmin adminer mc vsftpd pure-ftpd';
     for A in $1
     do
         optionMatch=0;
@@ -62,6 +64,12 @@ else
             "vsftpd")
                 vsftpdVrs=$A
                 optionMatch=1;
+                svcFtp=$((svcFtp+1));
+                ;;
+            "pure-ftpd")
+                pureftpdVrs=$A
+                optionMatch=1;
+                svcFtp=$((svcFtp+1));
                 ;;
             esac
         if [ $optionMatch -eq 0 ]; then 
@@ -73,6 +81,11 @@ else
     # Checking one or two things before we begin
     if [ ${#phpVrs} == 0 ]; then
         echo -e "\e[1m\e[101mERROR :\e[0m option list need at least a PHP version and database type."
+        exit 1
+    fi
+
+    if (( $svcFtp == 2 )); then
+        echo -e "\e[1m\e[101mERROR :\e[0m Both vsftpd and pure-ftp are enabled. Please remove one of them."
         exit 1
     fi
 
@@ -161,6 +174,14 @@ else
         cat ./dc/dc-vsftpd.yml >> docker-compose.yml
         cat ./env/env-vsftpd.env >> .env
         sed -i "s/vsftpdVrsString/"$vsftpdVrs"/g" .env
+    fi
+
+    # pure-ftpd
+    if [ ${#pureftpdVrs} != 0 ]; then
+        echo "Adding pure-ftpd"
+        cat ./dc/dc-pure-ftpd.yml >> docker-compose.yml
+        cat ./env/env-pure-ftpd.env >> .env
+        sed -i "s/pureftpdVrsString/"$pureftpdVrs"/g" .env
     fi
 
     echo -e "\e[42mMoving files in the main directory and we're done.\e[0m"
