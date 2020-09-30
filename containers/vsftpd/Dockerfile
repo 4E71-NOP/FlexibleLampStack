@@ -31,13 +31,13 @@ RUN usermod flexible -G www-data
 RUN echo "flexible:flexible" | chpasswd 
 RUN echo "flexible" >> /etc/vsftpd.chroot_list
 
-EXPOSE 21 40000-40100 
 
-RUN more /etc/passwd
-RUN more /etc/vsftpd.conf
-RUN more /etc/vsftpd.chroot_list
+# RUN more /etc/passwd
+# RUN more /etc/vsftpd.conf
+# RUN more /etc/vsftpd.chroot_list
 RUN echo "log" >> /var/log/vsftpd.log
 
+EXPOSE 21 40000-40100 
 
 ENTRYPOINT ["vsftpd"]
 CMD ["/etc/vsftpd.conf"]

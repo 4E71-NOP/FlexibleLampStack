@@ -35,7 +35,7 @@ Options:
 * **phpmyadmin** adds phpmyadmin
 * **adminer** adds adminer
 * **mc** adds opsenSSH + Midnight Commander (login/pass mc/mc)
-
+* **pure-ftpd** adds pure-ftp server (login/pass flexible/flexible)
 
 # How to go further ?
 Open 2 terminals (it's better that way) on the project directory. On the first terminal, change directory to ***./script***. Then use the `buildComposer` script like the following.

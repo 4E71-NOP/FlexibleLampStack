@@ -21,7 +21,7 @@ else
     pureftpdVrs="";
     svcMysql=0;
     svcFtp=0
-    optionList='php54 php56 php71 php72 php73 php74 mariadb mysql mysql8 postgress redis phpmyadmin adminer mc vsftpd pure-ftpd';
+    optionList='php54 php56 php71 php72 php73 php74 mariadb mysql mysql8 postgress redis phpmyadmin adminer mc pure-ftpd';
     for A in $1
     do
         optionMatch=0;
