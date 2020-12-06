@@ -22,7 +22,7 @@ else
     pureftpdVrs="";
     svcMysql=0;
     svcFtp=0
-    optionList='php54 php56 php71 php72 php73 php74 mariadb mysql mysql8 postgress redis phpmyadmin adminer mc pure-ftpd nocheck';
+    optionList='php54 php56 php71 php72 php73 php74 php80 mariadb mysql mysql8 postgress redis phpmyadmin adminer mc pure-ftpd nocheck';
     for A in $1
     do
         optionMatch=0;
@@ -32,7 +32,7 @@ else
                 nockeck=1
                 optionMatch=1;
                 ;;
-            "php54"|"php56"|"php71"|"php72"|"php73"|"php74")
+            "php54"|"php56"|"php71"|"php72"|"php73"|"php74"|"php80")
                 phpVrs=$A
                 optionMatch=1;
                 ;;

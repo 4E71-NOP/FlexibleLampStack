@@ -4,12 +4,17 @@ echo "Building everything."
 scriptFolder="script"
 
 cd $scriptFolder
-./buildComposer.sh 'php74 mysql postgres redis phpmyadmin adminer mc pure-ftpd'
+./buildComposer.sh 'php80 mysql postgres redis phpmyadmin adminer mc pure-ftpd'
 cd ..
 docker-compose build
 
 cd $scriptFolder
-./buildComposer.sh 'php73 mysql8'
+./buildComposer.sh 'php74 mysql8'
+cd ..
+docker-compose build
+
+cd $scriptFolder
+./buildComposer.sh 'php73 mariadb'
 cd ..
 docker-compose build
 

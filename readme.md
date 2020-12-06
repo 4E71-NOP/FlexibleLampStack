@@ -1,6 +1,17 @@
+
+[license-link]: https://creativecommons.org/licenses/by-nc-sa/4.0/
+[cc-image]: https://licensebuttons.net/l/by-nc-sa/4.0/88x31.png
+[shield-png]: https://img.shields.io/badge/Licence-CC--BY--NC--SA-lightgrey
+[downloads-badge]: https://img.shields.io/badge/Downloads-who%20cares%3F-green
+[language-badge]: https://img.shields.io/badge/Language-Bash/Docker%20Compose-blue
+
+[![CC BY-NC-SA 4.0][shield-png]][license-link]
+![downloads-badge]
+![language-badge]
+
 # A flexible LAMP stack
 
-This projet goal is to help web developpers to test their creations in many different configurations (ex: PHP5 / PHP7 etc.). 
+This projet goal is to help web developpers to test their creations in many different configurations (ex: PHP5/7, MySQL/Postgres etc.). 
 
 # Installation
 * Clone this repository on your local computer
@@ -37,11 +48,20 @@ Options:
 * **[mysql; mysql8; mariadb]** adds mysql 5.7, 8 or mariadb. Note that the script forbids the use of 2 services sharing the same default port (3306 in this case). So you cannot do : `./buildComposer.sh 'php74 mariadb mysql'`. It will exit with an error.
 * **postgres** adds postgresSQL
 * **redis** adds redis
-* **phpmyadmin** adds phpmyadmin
-* **adminer** adds adminer
-* **mc** adds opsenSSH + Midnight Commander (login/pass mc/mc)
-* **pure-ftpd** adds pure-ftp server (login/pass flexible/flexible)
+* **phpmyadmin** adds phpmyadmin (see `Notes on using services`)
+* **adminer** adds adminer (see `Notes on using services`)
+* **mc** adds opsenSSH + Midnight Commander (see `Notes on using services`)
+* **pure-ftpd** adds pure-ftp server (see `Notes on using services`)
 * **nocheck** special option to bypass checks. It means you can run both mariadb and mysql for example. But it will work only if you configure the containers/dc-files/env-files **properly** to avoid running services on the same ports.
+
+### Notes on using services 
+Some services require login/pass to connect to. Do as follow
+* **mysql** A default database is set on mysql. Connect with phpmyadmin with: host 'mysql', port '3306', dbname 'docker', user 'docker', password '1a2b3c4d'
+* **postgres** A default database is set on postgres. Connect with adminer with: host 'postgres', port '5432', dbname 'docker', user 'docker', password '1a2b3c4d'
+* **mc** Connect to your localhost like this `ssh -l mc <your.local.server.IP> -p 2222`. Then use the password 'mc'.
+* **pure-ftpd** Connect to the FTP service with any FTP sotware and use login: 'flexible', password 'flexible'
+
+
 
 # How to go further ?
 Open 2 terminals (it's better that way) on the project directory. On the first terminal, change directory to ***./script***. Then use the `buildComposer` script like the following.
@@ -87,7 +107,7 @@ You can remove those files as well when all is ok for you. Then it's about confi
 
 The first times you run the docker-compose command, the system will download and build everything. It can take some time depending on the bandwith you have. Most of the time it wont take more than 5 minutes for a ADSL connexion. 
 
-As you are building different configurations, if you re-use a previously built container image it will be mush faster to start. So one way to save time in the future is to build many different configurations.
+As you are building different configurations, if you re-use a previously built container image it will be much faster to start. So one way to save time in the future is to build many different configurations.
 
 Example:
 ```sh
@@ -129,3 +149,17 @@ I'm open to suggestions. Feel free to open a request in the corresponding sectio
 
 # Bugs
 I'll do my best to help. 
+
+
+# License details
+
+[![CC BY-NC-SA 4.0][shield-png]][license-link]
+
+This work is licensed under a : 
+[Creative Commons Attribution 4.0 International License][license-link].
+
+
+[![CC BY-NC-SA 4.0][cc-image]][license-link]
+
+
+See more details in the the `license.md` file. 
