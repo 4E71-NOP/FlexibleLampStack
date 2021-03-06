@@ -11,7 +11,7 @@
 
 # A flexible LAMP stack
 
-This projet goal is to help web developpers to test their creations in many different configurations (ex: PHP5/7, MySQL/Postgres etc.). 
+This projet goal is to help web developpers to test their creations in many different configurations (ex: PHP5/7/8, MySQL/Postgres etc.). 
 
 # Installation
 * Clone this repository on your local computer
@@ -28,6 +28,10 @@ For those who want to build everything as fast as possible use the `hdi.sh` scri
 ## General Information
 This Docker Stack is built for local development and **not** for production usage. And as repetition is the key to pedagogy : YOU DO **NOT** USE IT FOR PRODUCTION.
 
+* **Why ?** : The default behavior of those applications / containers is considered as loose in terms of security. Ex: this `php.ini` doesn't have a `'display_errors = 0'` entry which is considered as a security risk. You can add it of course. But by default PHP diplays errors. Also this project use configured password. It is safe to say you need to change that, right ?
+* **Should I set those for you ?**  : No! Because you're supposed to know what to do about it, it's not the project goal, and nobody can do that as everyone has different needs. 
+
+So by default and if you are using the default values. **Do not use this in production.**
 
 ## Configuration
 
@@ -35,7 +39,7 @@ To configure the composer you can edit the files in `./script/dc/` and `./script
 
 Do **not** edit `docker-compose` and `.env` files directly as it will be overwritten as soon as you use the `/buildComposer.sh` script. We'll see that in the next section.
 
-Example: if you want to set mysql in another directory. Edit `./script/env/env-mysql.env` and set MYSQL_DATA_DIR and MYSQL_LOG_DIR to a directory of your liking. Then execute `/buildComposer.sh 'php74 mysql`.
+Example: if you want to set mysql in another directory. Edit `./script/env/env-mysql.env` and set MYSQL_DATA_DIR and MYSQL_LOG_DIR to a directory of your liking. Then execute `/buildComposer.sh 'php74 mysql'`.
 
 
 ## Usage 
@@ -44,8 +48,8 @@ There is a set of options to tell the script how to 'assemble' the docker-compos
 
 Options:
 
-* **[php54; php56; php71; php72; php73; php74]** adds an apache-php service with mysql, postgres and gd (image stuff) extensions.
-* **[mysql; mysql8; mariadb]** adds mysql 5.7, 8 or mariadb. Note that the script forbids the use of 2 services sharing the same default port (3306 in this case). So you cannot do : `./buildComposer.sh 'php74 mariadb mysql'`. It will exit with an error.
+* **[php54; php56; php71; php72; php73; php74; php80]** adds an apache-php service with mysql, postgres and gd (image stuff) extensions.
+* **[mysql; mysql8; mariadb]** adds mysql 5.7, 8 or Mariadb. Note that the script forbids the use of 2 services sharing the same default port (3306 in this case). So you cannot do : `./buildComposer.sh 'php74 mariadb mysql'`. It will exit with an error.
 * **postgres** adds postgresSQL
 * **redis** adds redis
 * **phpmyadmin** adds phpmyadmin (see `Notes on using services`)
@@ -56,7 +60,7 @@ Options:
 
 ### Notes on using services 
 Some services require login/pass to connect to. Do as follow
-* **mysql** A default database is set on mysql. Connect with phpmyadmin with: host 'mysql', port '3306', dbname 'docker', user 'docker', password '1a2b3c4d'
+* **mysql** A default database is set on the mysql service. Connect to phpmyadmin with: host 'mysql', port '3306', dbname 'docker', user 'docker', password '1a2b3c4d'. This user is the standart readonly user. The `superUser` account use the same password. 
 * **postgres** A default database is set on postgres. Connect with adminer with: host 'postgres', port '5432', dbname 'docker', user 'docker', password '1a2b3c4d'
 * **mc** Connect to your localhost like this `ssh -l mc <your.local.server.IP> -p 2222`. Then use the password 'mc'.
 * **pure-ftpd** Connect to the FTP service with any FTP sotware and use login: 'flexible', password 'flexible'
@@ -99,9 +103,10 @@ in `/data/www/html` there are 5 files. Those files will help you test everything
 You can test 3 URIs from http://localhost
 * [index.html](http://locahost/index.html) is a simple html file. If many things go wrong, going back to HTML is good.
 * [info.php](http://locahost/info.php) is a standart **`php_info()`** which will output a complete info about PHP.
-* [phpcapabilitiestest.php](http://locahost/phpcapabilitiestest.php) is a test page including a connexion to mysql and postgres, and a GD drawing test. Expect errors if not mysql or postgres service is up.
+* [phpcapabilitiestest.php](http://locahost/phpcapabilitiestest.php) is a test page including a connexion to mysql and postgres, and a GD drawing test. Expect errors if no mysql or postgres service is up.
 
-You can remove those files as well when all is ok for you. Then it's about configuration of volumes to suit your needs.
+You can remove those files as well when all is ok for you. Then it's about configuration of volumes to suit your needs. Or creating a symlink pointing to the directory of your choice.
+
 
 # Notes:
 

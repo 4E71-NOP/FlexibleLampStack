@@ -10,10 +10,10 @@
       - "0.0.0.0:${HOST_MACHINE_FTP_PORT}:21"
       - "40000-40100:40000-40100"
     volumes: 
-      - ./logs/vsftpd:/var/log/vsftpd
-      - ./data/www/html/:/var/www/html
-      - ./data/etc/vsftpd/vsftpd.conf:/etc/vsftpd.conf
-      - ./log/vsftpd/vsftpd.log:/var/log/vsftpd.log
+      - ./_data/www/html/:/var/www/html
+      - ./_sysTree/var/log/vsftpd:/var/log/vsftpd
+      - ./_sysTree/etc/vsftpd/vsftpd.conf:/etc/vsftpd.conf
+      - ./_sysTree/var/log/vsftpd/vsftpd.log:/var/log/vsftpd.log
     # environment:
       # - "USER_ID:1000"
       # - "GROUP_ID:1000"

@@ -1,4 +1,13 @@
 <?php
+$sessionStatus = "Seems ok";
+if ( session_start() != false) {
+    $_SESSION['FlexibleLampStack'] = "FlexibleLampStack was there.";
+    $_SESSION['count']++;
+    $_SESSION['time'] = time();    
+}
+else { $sessionStatus = "status=".session_status()."<br>php.ini/session.save_path=`".session_save_path()."`";}
+error_log( "FlexibleLampStack session contains : " . $_SESSION['FlexibleLampStack'] );
+
 echo ("
 <html>
 <head>	
@@ -114,6 +123,13 @@ echo ("<hr><p>Available drivers:<br>");
 echo (var_dump ( PDO::getAvailableDrivers () ));
 echo ("</p>");
 
+echo ("<hr><p>
+Session:<br>".
+$sessionStatus."<br>
+Session count:".$_SESSION['count'].
+"</p>"
+);
+
 echo ("
 <hr>
 <p>
@@ -122,5 +138,5 @@ Part of Flexible LAMP Stack.
     </body>
     </html>
 ");
-
+session_write_close();
 ?>

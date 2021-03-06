@@ -10,5 +10,5 @@
       - "${HOST_MACHINE_PUREFTPD_PORT}:21"
       - "40000-40100:40000-40100"
     volumes:
-      - ./data/www/html:/var/www/html
-      - ./data/etc/pure-ftpd/:/etc/pure-ftpd/
+      - ./_data/www/html:/var/www/html
+      - ./_sysTree/etc/pure-ftpd/:/etc/pure-ftpd/

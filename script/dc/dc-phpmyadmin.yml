@@ -20,5 +20,6 @@
       # MYSQL_USER: ${PMA_SUPER_USER}
       # MYSQL_PASSWORD: ${PMA_SUPER_PASSWORD}
     volumes:
-      - /sessions
+      # - /sessions
+      - ${SESSION_DIR}:/var/www/sessions
       - ${PHP_INI}:/usr/local/etc/php/conf.d/php-phpmyadmin.ini
